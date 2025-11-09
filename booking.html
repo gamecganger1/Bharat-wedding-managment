@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Wedding - Bharat's Wedding Management</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Book Your Wedding Event with Bharat 💒</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="booking.html">Book Event</a>
+      
+      <a href="budget.html">Budget</a>
+      <a href="admin.html">Admin Panel</a>
+    </nav>
+  </header>
+
+  <section>
+    <form id="bookForm">
+      <label>Bride Name:</label>
+      <input type="text" id="bride" required>
+
+      <label>Groom Name:</label>
+      <input type="text" id="groom" required>
+
+      <label>Mobile Number:</label>
+      <input type="tel" id="mobile" pattern="[0-9]{10}" placeholder="10 digit number" required>
+
+      <div id="eventContainer">
+        <div class="event-entry">
+          <h3>Event 1</h3>
+          <label>Function Type:</label>
+          <select class="function-type" required>
+            <option value="">Select Function</option>
+            <option value="Haldi">Haldi</option>
+            <option value="Mehendi">Mehendi</option>
+            <option value="Sangeet">Sangeet</option>
+            <option value="Wedding">Wedding</option>
+            <option value="Reception">Reception</option>
+          </select>
+
+          <label>Destination:</label>
+          <input type="text" class="destination" required>
+
+          <label>Date:</label>
+          <input type="date" class="event-date" required>
+        </div>
+      </div>
+
+      <button type="button" id="addMoreEvents">+ Add Another Event</button>
+      <button type="submit">Book All Events</button>
+    </form>
+
+    <div id="bookingResult"></div>
+    <div id="previousBookings">
+      <h3>Your Previous Bookings</h3>
+      <div id="bookingsList"></div>
+    </div>
+  </section>
+
+  <style>
+    .event-entry {
+      border: 1px solid #ffb347;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 8px;
+      position: relative;
+    }
+    .remove-event {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #ff4081;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 25px;
+      height: 25px;
+      cursor: pointer;
+    }
+    #addMoreEvents {
+      background: #ffb347;
+      margin: 10px 0;
+    }
+    .booking-card {
+      background: #ffe6f0;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 8px;
+    }
+  </style>
+
+  <script src="main.js"></script>
+</body>
+</html>

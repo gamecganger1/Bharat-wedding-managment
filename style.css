@@ -1,0 +1,492 @@
+:root {
+  --primary-color: #D4145A;
+  --secondary-color: #FBB03B;
+  --dark-color: #333;
+  --light-color: #f8f9fa;
+  --border-radius: 10px;
+  --box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  --transition: all 0.3s ease;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  background: #fffaf5;
+  color: var(--dark-color);
+}
+
+header {
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+  padding: 20px;
+  color: white;
+  text-align: center;
+  box-shadow: var(--box-shadow);
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+nav a {
+  margin: 0 15px;
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 8px 15px;
+  border-radius: 20px;
+  transition: var(--transition);
+  position: relative;
+}
+
+nav a:hover, nav a.active {
+  background: rgba(255,255,255,0.2);
+  transform: translateY(-2px);
+}
+
+nav a.active::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 5px;
+  height: 5px;
+  background: white;
+  border-radius: 50%;
+}
+section {
+  width: 90%;
+  max-width: 1200px;
+  margin: 30px auto;
+  background: white;
+  border-radius: var(--border-radius);
+  padding: 20px;
+  box-shadow: var(--box-shadow);
+}
+
+.welcome-section {
+  text-align: center;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #fff5f8, #fff9ef);
+  margin-bottom: 40px;
+}
+
+.intro-text {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.dashboard {
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.grid {
+  display: grid;
+  gap: 20px;
+}
+
+.card {
+  background: white;
+  padding: 25px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+.card h2 {
+  margin-top: 0;
+  color: var(--primary-color);
+  font-size: 1.5rem;
+}
+
+.dashboard-stats {
+  margin: 20px 0;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.stat-card {
+  background: var(--light-color);
+  padding: 20px;
+  border-radius: var(--border-radius);
+  text-align: center;
+  transition: var(--transition);
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--box-shadow);
+}
+
+.stat-card h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--dark-color);
+}
+
+.stat-card span {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  display: block;
+  margin-top: 10px;
+}
+
+.booking-card {
+  background: #fff5f8;
+  padding: 20px;
+  margin: 15px 0;
+  border-radius: 10px;
+  border-left: 4px solid #D4145A;
+}
+
+.event-card {
+  background: white;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  transition: var(--transition);
+}
+
+.event-card:hover {
+  transform: translateX(5px);
+}
+
+.event-date {
+  color: var(--primary-color);
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.event-card h4 {
+  margin: 5px 0;
+  color: var(--dark-color);
+}
+
+.quick-actions {
+  display: grid;
+  gap: 15px;
+}
+
+.action-button {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  background: var(--light-color);
+  border-radius: var(--border-radius);
+  text-decoration: none;
+  color: var(--dark-color);
+  transition: var(--transition);
+}
+
+.action-button:hover {
+  transform: translateX(10px);
+  background: white;
+  box-shadow: var(--box-shadow);
+}
+
+.action-button span {
+  font-size: 2rem;
+  margin-right: 15px;
+}
+
+.action-button h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.action-button p {
+  margin: 5px 0 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.activity-timeline {
+  margin-top: 20px;
+}
+
+.activity-item {
+  display: flex;
+  margin-bottom: 15px;
+  padding-left: 20px;
+  border-left: 2px solid var(--light-color);
+  transition: var(--transition);
+}
+
+.activity-item:hover {
+  border-left-color: var(--primary-color);
+}
+
+.activity-time {
+  min-width: 150px;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.activity-content {
+  flex: 1;
+  padding-left: 20px;
+}
+
+.activity-icon {
+  margin-right: 10px;
+}
+
+.upcoming-events {
+  margin-top: 30px;
+}
+
+.upcoming-events h3 {
+  color: var(--primary-color);
+  margin-bottom: 15px;
+}
+
+#bookingsFilter {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+#bookingsFilter input {
+  flex: 1;
+}
+
+.events-list {
+  margin-top: 15px;
+  padding-left: 15px;
+  border-left: 2px solid #FBB03B;
+}
+
+.admin-section {
+  background: #fff;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.team-setup {
+  margin-bottom: 20px;
+}
+
+.assignment-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+#assignedEvents div {
+  background: #f8f9fa;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border-left: 4px solid #D4145A;
+}
+input, select, button {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+/* Budget Calculator Styles */
+.budget-planner .card {
+  height: fit-content;
+}
+
+.budget-form {
+  display: grid;
+  gap: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--dark-color);
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: var(--border-radius);
+  margin: 5px 0;
+  transition: var(--transition);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: var(--primary-color);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(212,20,90,0.1);
+}
+
+.checkbox-group {
+  display: grid;
+  gap: 10px;
+}
+
+.checkbox-group label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: normal;
+}
+
+.checkbox-group input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+}
+
+.budget-summary {
+  background: var(--light-color);
+  padding: 20px;
+  border-radius: var(--border-radius);
+  margin-top: 20px;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.summary-item:last-child {
+  border-bottom: none;
+}
+
+.summary-item.total {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 2px solid var(--primary-color);
+  font-weight: 600;
+  font-size: 1.2em;
+}
+
+.save-button {
+  width: 100%;
+  margin-top: 20px;
+  background: var(--secondary-color);
+}
+
+.save-note {
+  text-align: center;
+  color: #666;
+  font-size: 0.9em;
+  margin-top: 10px;
+}
+
+.budget-plan-card {
+  background: white;
+  border-radius: var(--border-radius);
+  padding: 20px;
+  margin: 15px 0;
+  box-shadow: var(--box-shadow);
+  transition: var(--transition);
+  border-left: 4px solid var(--primary-color);
+}
+
+.budget-plan-card:hover {
+  transform: translateX(5px);
+}
+
+.budget-plan-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.budget-plan-header h3 {
+  margin: 0;
+  color: var(--primary-color);
+}
+
+.budget-date {
+  color: #666;
+  font-size: 0.9em;
+}
+
+.budget-plan-details {
+  display: grid;
+  gap: 10px;
+}
+
+.budget-plan-details p {
+  margin: 0;
+}
+
+.delete-btn {
+  background: #dc3545;
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 0.9em;
+  margin-top: 15px;
+  transition: var(--transition);
+}
+
+.delete-btn:hover {
+  background: #c82333;
+  transform: translateY(-2px);
+}
+
+button {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: var(--transition);
+  padding: 12px 20px;
+}
+
+button:hover {
+  background: var(--secondary-color);
+  transform: translateY(-2px);
+  box-shadow: var(--box-shadow);
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+li {
+  background: linear-gradient(to right, #fff5f8, #fff9ef);
+  margin: 8px 0;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(212,20,90,0.1);
+  transition: all 0.3s ease;
+}
+li:hover {
+  transform: translateX(5px);
+  border-color: #FBB03B;
+}
+.btn {
+  background: #ff4081;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 8px;
+  text-decoration: none;
+}

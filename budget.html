@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Calculator - Bharat's Wedding Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Wedding Budget Planner 💰</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="booking.html">Book Event</a>
+            <a href="budget.html" class="active">Budget Calculator</a>
+            <a href="admin.html">Admin Panel</a>
+        </nav>
+    </header>
+
+    <section class="budget-planner">
+        <div class="grid" style="grid-template-columns: 2fr 1fr;">
+            <!-- Budget Input Form -->
+            <div class="card">
+                <h2>Wedding Budget Calculator</h2>
+                <form id="budgetForm" class="budget-form">
+                    <div class="form-group">
+                        <label>Event Type:</label>
+                        <select id="eventType" required>
+                            <option value="">Select Event Type</option>
+                            <option value="wedding">Wedding Ceremony</option>
+                            <option value="reception">Reception</option>
+                            <option value="sangeet">Sangeet</option>
+                            <option value="mehendi">Mehendi</option>
+                            <option value="haldi">Haldi</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Venue Details:</label>
+                        <input type="text" id="venueName" placeholder="Venue Name" required>
+                        <input type="number" id="venueCost" placeholder="Venue Cost" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Catering:</label>
+                        <input type="number" id="foodCostPerGuest" placeholder="Cost per Guest" required>
+                        <input type="number" id="expectedGuests" placeholder="Expected Number of Guests" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Decoration:</label>
+                        <input type="number" id="decorationCost" placeholder="Decoration Cost" required>
+                        <select id="decorationType">
+                            <option value="basic">Basic Decoration</option>
+                            <option value="premium">Premium Decoration</option>
+                            <option value="luxury">Luxury Decoration</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Additional Services:</label>
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" id="photography" data-cost="25000"> Photography (₹25,000)</label>
+                            <label><input type="checkbox" id="dj" data-cost="15000"> DJ & Music (₹15,000)</label>
+                            <label><input type="checkbox" id="mehendi" data-cost="10000"> Mehendi Artist (₹10,000)</label>
+                            <label><input type="checkbox" id="choreographer" data-cost="20000"> Choreographer (₹20,000)</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Miscellaneous:</label>
+                        <input type="number" id="miscCost" placeholder="Other Costs">
+                        <input type="text" id="miscDetails" placeholder="Details of other costs">
+                    </div>
+
+                    <button type="submit" id="calculateBtn">Calculate Total Budget</button>
+                </form>
+            </div>
+
+            <!-- Budget Summary -->
+            <div class="card">
+                <h2>Budget Summary</h2>
+                <div id="budgetSummary" class="budget-summary">
+                    <div class="summary-item">
+                        <span>Venue Cost:</span>
+                        <span id="summaryVenue">₹0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Catering Cost:</span>
+                        <span id="summaryCatering">₹0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Decoration:</span>
+                        <span id="summaryDecoration">₹0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Additional Services:</span>
+                        <span id="summaryServices">₹0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Miscellaneous:</span>
+                        <span id="summaryMisc">₹0</span>
+                    </div>
+                    <div class="summary-item total">
+                        <span>Total Budget:</span>
+                        <span id="summaryTotal">₹0</span>
+                    </div>
+                </div>
+
+                <div id="saveBudgetSection" style="display: none;">
+                    <button id="saveBudget" class="save-button">Save Budget Plan</button>
+                    <p class="save-note">This budget plan will be saved for future reference</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Saved Budgets -->
+        <div class="card" style="margin-top: 20px;">
+            <h2>Saved Budget Plans</h2>
+            <div id="savedBudgets" class="saved-budgets"></div>
+        </div>
+    </section>
+
+    <script src="main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const budgetForm = document.getElementById('budgetForm');
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            let savedBudgets = JSON.parse(localStorage.getItem('budgetPlans')) || [];
+
+            function calculateBudget() {
+                const venueCost = Number(document.getElementById('venueCost').value) || 0;
+                const foodCostPerGuest = Number(document.getElementById('foodCostPerGuest').value) || 0;
+                const expectedGuests = Number(document.getElementById('expectedGuests').value) || 0;
+                const decorationCost = Number(document.getElementById('decorationCost').value) || 0;
+                const miscCost = Number(document.getElementById('miscCost').value) || 0;
+
+                let additionalServicesCost = 0;
+                checkboxes.forEach(checkbox => {
+                    if (checkbox.checked) {
+                        additionalServicesCost += Number(checkbox.dataset.cost);
+                    }
+                });
+
+                const cateringCost = foodCostPerGuest * expectedGuests;
+                const totalCost = venueCost + cateringCost + decorationCost + additionalServicesCost + miscCost;
+
+                // Update summary
+                document.getElementById('summaryVenue').textContent = `₹${venueCost.toLocaleString()}`;
+                document.getElementById('summaryCatering').textContent = `₹${cateringCost.toLocaleString()}`;
+                document.getElementById('summaryDecoration').textContent = `₹${decorationCost.toLocaleString()}`;
+                document.getElementById('summaryServices').textContent = `₹${additionalServicesCost.toLocaleString()}`;
+                document.getElementById('summaryMisc').textContent = `₹${miscCost.toLocaleString()}`;
+                document.getElementById('summaryTotal').textContent = `₹${totalCost.toLocaleString()}`;
+
+                document.getElementById('saveBudgetSection').style.display = 'block';
+                return totalCost;
+            }
+
+            function saveBudgetPlan() {
+                const budgetPlan = {
+                    id: Date.now(),
+                    eventType: document.getElementById('eventType').value,
+                    venueName: document.getElementById('venueName').value,
+                    venueCost: Number(document.getElementById('venueCost').value),
+                    foodCostPerGuest: Number(document.getElementById('foodCostPerGuest').value),
+                    expectedGuests: Number(document.getElementById('expectedGuests').value),
+                    decorationCost: Number(document.getElementById('decorationCost').value),
+                    decorationType: document.getElementById('decorationType').value,
+                    additionalServices: Array.from(checkboxes)
+                        .filter(cb => cb.checked)
+                        .map(cb => ({ name: cb.id, cost: Number(cb.dataset.cost) })),
+                    miscCost: Number(document.getElementById('miscCost').value),
+                    miscDetails: document.getElementById('miscDetails').value,
+                    totalCost: calculateBudget(),
+                    createdAt: new Date().toISOString()
+                };
+
+                savedBudgets.push(budgetPlan);
+                localStorage.setItem('budgetPlans', JSON.stringify(savedBudgets));
+                displaySavedBudgets();
+            }
+
+            function displaySavedBudgets() {
+                const savedBudgetsDiv = document.getElementById('savedBudgets');
+                savedBudgetsDiv.innerHTML = savedBudgets.length === 0 ? 
+                    '<p>No saved budget plans yet</p>' : 
+                    savedBudgets.map(budget => `
+                        <div class="budget-plan-card">
+                            <div class="budget-plan-header">
+                                <h3>${budget.eventType.charAt(0).toUpperCase() + budget.eventType.slice(1)}</h3>
+                                <span class="budget-date">${new Date(budget.createdAt).toLocaleDateString()}</span>
+                            </div>
+                            <div class="budget-plan-details">
+                                <p><strong>Venue:</strong> ${budget.venueName}</p>
+                                <p><strong>Guests:</strong> ${budget.expectedGuests}</p>
+                                <p><strong>Decoration:</strong> ${budget.decorationType}</p>
+                                <p><strong>Total Budget:</strong> ₹${budget.totalCost.toLocaleString()}</p>
+                            </div>
+                            <button onclick="deleteBudgetPlan(${budget.id})" class="delete-btn">Delete</button>
+                        </div>
+                    `).join('');
+            }
+
+            function deleteBudgetPlan(id) {
+                if (confirm('Are you sure you want to delete this budget plan?')) {
+                    savedBudgets = savedBudgets.filter(budget => budget.id !== id);
+                    localStorage.setItem('budgetPlans', JSON.stringify(savedBudgets));
+                    displaySavedBudgets();
+                }
+            }
+
+            budgetForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                calculateBudget();
+            });
+
+            document.getElementById('saveBudget').addEventListener('click', saveBudgetPlan);
+
+            // Initialize
+            displaySavedBudgets();
+
+            // Make deleteBudgetPlan global
+            window.deleteBudgetPlan = deleteBudgetPlan;
+        });
+    </script>
+</body>
+</html>

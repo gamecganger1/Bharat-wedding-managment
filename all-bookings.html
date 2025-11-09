@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Bookings - Bharat's Wedding Management</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>All Wedding Bookings 📅</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="booking.html">Book Event</a>
+      <a href="all-bookings.html">All Bookings</a>
+      <a href="guests.html">Guest List</a>
+      <a href="budget.html">Budget</a>
+      <a href="admin.html">Admin Panel</a>
+    </nav>
+  </header>
+
+  <section>
+    <div id="bookingsFilter">
+      <input type="text" id="searchBookings" placeholder="Search by bride or groom name...">
+      <input type="date" id="dateFilter" placeholder="Filter by date">
+      <button onclick="clearFilters()">Clear Filters</button>
+    </div>
+
+    <div id="allBookingsList"></div>
+  </section>
+
+  <script src="main.js"></script>
+</body>
+</html>

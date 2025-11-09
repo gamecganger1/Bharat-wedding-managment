@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - Bharat's Wedding Management</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Bharat's Admin Dashboard 👑</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="booking.html">Book Event</a>
+      
+      <a href="budget.html">Budget</a>
+      <a href="admin.html">Admin Panel</a>
+    </nav>
+  </header>
+
+  <section>
+    <div class="admin-section">
+      <h2>Team Management</h2>
+      <!--<div class="team-setup" id="initialTeamSetup">
+        Single member addition -->
+        
+
+        <!-- Bulk member addition -->
+        <div class="bulk-add-section">
+          <p>Add Team Members</p>
+          <textarea id="bulkTeamMembers" rows="5" placeholder="Example:&#10;Rajesh Kumar&#10;Priya Sharma&#10;Amit Patel"></textarea>
+          <button id="addBulkMembers">Add All Team Members</button>
+        </div>
+
+        <div class="current-team">
+          <h3>Current Team Members</h3>
+          <div id="teamList" class="team-members-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-section">
+      <h2>All Bookings</h2>
+      <div class="bookings-filter">
+        <input type="text" id="searchBooking" placeholder="Search by bride or groom name...">
+        <button id="clearSearch">Clear Search</button>
+      </div>
+      <div id="allBookings" class="bookings-list">
+        <!-- Bookings will be loaded here -->
+      </div>
+    </div>
+
+    <div class="admin-section">
+      <h2>Event Assignments</h2>
+      <div class="assignment-form">
+        <div class="form-group">
+          <label>Select Booking:</label>
+          <select id="bookingSelect">
+            <option value="">Select a Booking</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Select Event:</label>
+          <select id="eventSelect">
+            <option value="">Select an Event</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Assign To:</label>
+          <select id="assignMember">
+            <option value="">Select Team Member</option>
+          </select>
+        </div>
+        <button id="assignEvent">Assign Event</button>
+      </div>
+      <div id="assignedEvents"></div>
+    </div>
+  </section>
+
+  <style>
+    .add-single-member {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .add-single-member input {
+      flex: 1;
+    }
+    
+    .bulk-add-section {
+      margin-bottom: 20px;
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 8px;
+    }
+    
+    .bookings-filter {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .bookings-filter input {
+      flex: 1;
+    }
+    
+    .bookings-list {
+      display: grid;
+      gap: 15px;
+    }
+    
+    .booking-card {
+      background: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      position: relative;
+    }
+    
+    .delete-booking {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #ff4081;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    
+    .team-member-card {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f8f9fa;
+      padding: 10px;
+      border-radius: 6px;
+      margin-bottom: 5px;
+    }
+    
+    .assignment-form {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+  </style>
+
+  <style>
+    .team-members-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 10px;
+      margin-top: 15px;
+    }
+    
+    .team-members-list .team-member {
+      background: #fff5f8;
+      padding: 10px;
+      border-radius: 6px;
+      border-left: 3px solid #D4145A;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .team-member .remove-member {
+      background: #ff4081;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9em;
+    }
+    
+    .team-member .remove-member:hover {
+      background: #d81b60;
+    }
+    
+    .team-setup textarea {
+      width: 100%;
+      min-height: 100px;
+      margin: 10px 0;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    
+    .team-setup button {
+      background: #D4145A;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    
+    .team-setup button:hover {
+      background: #FBB03B;
+    }
+  </style>
+
+  <style>
+    .admin-section {
+      background: #fff;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .team-setup {
+      margin-bottom: 20px;
+    }
+    textarea {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    .assignment-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr auto;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    #assignedEvents div {
+      background: #f8f9fa;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 6px;
+      border-left: 4px solid #D4145A;
+    }
+    .pending-booking {
+      background: #fff5f8;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border-left: 4px solid #FBB03B;
+    }
+    .event-card {
+      background: white;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 6px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+  </style>
+
+  <script src="admin.js"></script>
+</body>
+</html>

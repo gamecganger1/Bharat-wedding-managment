@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bharat's Wedding Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>💍 Bharat's Wedding Management 💐</h1>
+        <nav>
+            <a href="index.html" class="active">Home</a>
+            <a href="booking.html">Book Event</a>
+            <a href="budget.html">Budget Calculator</a>
+            <a href="admin.html">Admin Panel</a>
+        </nav>
+    </header>
+
+    <section class="welcome-section">
+        <div class="intro-text">
+            <h2>Welcome to Bharat's Wedding Management</h2>
+            <p>We specialize in creating unforgettable wedding experiences. From traditional ceremonies to modern celebrations, we handle everything including Haldi, Mehendi, Sangeet, Reception with complete food, guest, and decoration management.</p>
+            <p>Let us make your special day perfect! ✨</p>
+            <a href="booking.html" class="btn">Start Planning Your Wedding</a>
+        </div>
+    </section>
+
+    <section class="dashboard">
+        <div class="grid" style="grid-template-columns: 2fr 1fr;">
+            <!-- Overview Section -->
+            <div class="card">
+                <h2>Your Wedding Management Dashboard</h2>
+                <div id="dashboardStats" class="dashboard-stats"></div>
+                
+                <div class="upcoming-events">
+                    <h3>Upcoming Events</h3>
+                    <div id="upcomingEventsList"></div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card">
+                <h2>Quick Actions</h2>
+                <div class="quick-actions">
+                    <a href="booking.html" class="action-button">
+                        <span>📅</span>
+                        <div>
+                            <h3>Book Event</h3>
+                            <p>Schedule your wedding events</p>
+                        </div>
+                    </a>
+                    <a href="budget.html" class="action-button">
+                        <span>�</span>
+                        <div>
+                            <h3>Budget Calculator</h3>
+                            <p>Plan and track your wedding expenses</p>
+                        </div>
+                    </a>
+                    <a href="admin.html" class="action-button">
+                        <span>⚙️</span>
+                        <div>
+                            <h3>Admin Panel</h3>
+                            <p>Manage team and assignments</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="card" style="margin-top: 20px;">
+            <h2>Recent Activity</h2>
+            <div id="recentActivity"></div>
+        </div>
+    </section>
+
+    <script src="main.js"></script>
+    <script>
+        // Initialize dashboard
+        function initDashboard() {
+            loadDashboardStats();
+            loadUpcomingEvents();
+            loadRecentActivity();
+        }
+
+        // Load and display dashboard statistics
+        function loadDashboardStats() {
+            const bookings = getAllBookings();
+            const guests = JSON.parse(localStorage.getItem('guests')) || [];
+            const team = getAllTeamMembers();
+            const assignments = getAllAssignments();
+            
+            const stats = {
+                activeBookings: bookings.filter(b => b.status !== 'completed').length,
+                totalGuests: guests.length,
+                teamMembers: team.length,
+                pendingAssignments: bookings.reduce((total, booking) => 
+                    total + booking.events.length, 0) - assignments.length
+            };
+            
+            document.getElementById('dashboardStats').innerHTML = `
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Active Bookings</h3>
+                        <span>${stats.activeBookings}</span>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total Guests</h3>
+                        <span>${stats.totalGuests}</span>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Team Members</h3>
+                        <span>${stats.teamMembers}</span>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Pending Assignments</h3>
+                        <span>${stats.pendingAssignments}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Load and display upcoming events
+        function loadUpcomingEvents() {
+            const bookings = getAllBookings();
+            const today = new Date();
+            
+            // Get all events from all bookings
+            const allEvents = bookings.reduce((events, booking) => {
+                return events.concat(booking.events.map(event => ({
+                    ...event,
+                    bride: booking.bride,
+                    groom: booking.groom,
+                    bookingId: booking.id
+                })));
+            }, []);
+            
+            // Filter and sort upcoming events
+            const upcomingEvents = allEvents
+                .filter(event => new Date(event.date) >= today)
+                .sort((a, b) => new Date(a.date) - new Date(b.date))
+                .slice(0, 5);
+            
+            document.getElementById('upcomingEventsList').innerHTML = upcomingEvents.map(event => `
+                <div class="event-card">
+                    <div class="event-date">${formatDate(event.date)}</div>
+                    <h4>${event.functionType}</h4>
+                    <p>${event.bride} & ${event.groom}</p>
+                    <p>📍 ${event.destination}</p>
+                </div>
+            `).join('') || '<p>No upcoming events</p>';
+        }
+
+        // Load and display recent activity
+        function loadRecentActivity() {
+            // Collect all activities with timestamps
+            const activities = [
+                ...getAllBookings().map(booking => ({
+                    type: 'booking',
+                    date: booking.createdAt,
+                    text: `New booking created for ${booking.bride} & ${booking.groom}`
+                })),
+                ...getAllAssignments().map(assignment => ({
+                    type: 'assignment',
+                    date: assignment.createdAt,
+                    text: `${assignment.eventType} assigned to ${assignment.memberName}`
+                })),
+                ...(JSON.parse(localStorage.getItem('guests')) || []).map(guest => ({
+                    type: 'guest',
+                    date: guest.addedAt,
+                    text: `New guest added: ${guest.name}`
+                }))
+            ];
+            
+            // Sort by date and take recent 10
+            const recentActivities = activities
+                .sort((a, b) => new Date(b.date) - new Date(a.date))
+                .slice(0, 10);
+            
+            document.getElementById('recentActivity').innerHTML = `
+                <div class="activity-timeline">
+                    ${recentActivities.map(activity => `
+                        <div class="activity-item">
+                            <div class="activity-time">
+                                ${formatDate(activity.date)} ${formatTime(activity.date)}
+                            </div>
+                            <div class="activity-content">
+                                <span class="activity-icon">
+                                    ${activity.type === 'booking' ? '📅' : 
+                                      activity.type === 'assignment' ? '🎯' : '👥'}
+                                </span>
+                                ${activity.text}
+                            </div>
+                        </div>
+                    `).join('') || '<p>No recent activity</p>'}
+                </div>
+            `;
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize database if needed
+            DB.init();
+            
+            // Initialize dashboard
+            initDashboard();
+            
+            // Add reset database button (only visible in development)
+            if (window.location.protocol === 'file:') {
+                const resetBtn = document.createElement('button');
+                resetBtn.textContent = 'Reset Database';
+                resetBtn.style.position = 'fixed';
+                resetBtn.style.bottom = '20px';
+                resetBtn.style.right = '20px';
+                resetBtn.style.zIndex = '1000';
+                resetBtn.onclick = () => {
+                    if (confirm('Are you sure you want to reset the database to its initial state?')) {
+                        DB.clearDatabase();
+                        initDashboard();
+                    }
+                };
+                document.body.appendChild(resetBtn);
+            }
+        });
+
+        // Listen for storage updates
+        window.addEventListener('storage', () => {
+            loadDashboardStats();
+            loadUpcomingEvents();
+            loadRecentActivity();
+        });
+    </script>
+</body>
+</html>
